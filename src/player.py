@@ -1,5 +1,5 @@
 import pygame
-import block
+import src.block as block
 
 
 class Player:
@@ -10,7 +10,7 @@ class Player:
         self.speed = 500
         self.dir = pygame.Vector2(0, 0)
         self.loadsprite = pygame.image.load(
-            "gimg/heart.png"
+            "img/heart.png"
         ).convert_alpha()
         self.sprite = pygame.transform.scale_by(self.loadsprite, 0.02)
         self.hp = 20

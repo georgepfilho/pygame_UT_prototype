@@ -1,8 +1,8 @@
 import pygame
 import random
-from player import *
-from block import *
-from arena import *
+from src.player import *
+from src.block import *
+from src.arena import *
 
 pygame.init()
 
