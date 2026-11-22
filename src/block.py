@@ -1,4 +1,6 @@
 import pygame
+from src.player import Player
+from src import globals
 class Block:
 
     def __init__(self, x, y):
@@ -9,7 +11,7 @@ class Block:
         self.loadSprite = pygame.image.load('img/square.png').convert_alpha()
         self.sprite = pygame.transform.scale_by(self.loadSprite, 0.0625)
 
-    def draw(self, screen):
-        
-        screen.blit(self.sprite, pygame.Vector2(self.x, self.y))
 
+    def draw(self):
+        
+        globals.screen.blit(self.sprite, pygame.Vector2(self.x, self.y))

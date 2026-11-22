@@ -1,5 +1,6 @@
 import pygame
-import src.block as block
+from src import globals
+
 
 
 class Player:
@@ -13,36 +14,48 @@ class Player:
             "img/heart.png"
         ).convert_alpha()
         self.sprite = pygame.transform.scale_by(self.loadsprite, 0.02)
-        self.hp = 20
-        self.hb = pygame.Rect(self.x, self.y, 36, 36)
+        self.hp = 3
+        self.hb = pygame.Rect(self.x, self.y, 32, 32)
+        self.isInvulnerable = False
+        self.invulnerableTimer = 0.0
 
-    def draw(self, screen):
-        screen.blit(self.sprite, pygame.Vector2(self.x, self.y))
+    def draw(self):
+        globals.screen.blit(self.sprite, pygame.Vector2(self.x, self.y))
 
-    def update(self, keys, deltatime, objList, arena):
+    def update(self, keys, objList):
 
         self.inputcheck(keys)
-        self.moveX(self.dir.x, deltatime, arena)
+        self.moveX(self.dir.x)
         self.collision("x", objList)
-        self.moveY(self.dir.y, deltatime, arena)
+        self.moveY(self.dir.y)
         self.collision("y", objList)
+
+        if self.isInvulnerable:
+            self.invulnerableTimer += globals.dt
+        if self.invulnerableTimer > 1.0:
+            self.isInvulnerable = False
+            self.invulnerableTimer = 0.0
+
+        if self.hp < 1:
+            print("se fodeu!")
+            globals.running = False
 
         
 
-    def moveX(self, xdir, deltatime, arena):
-         self.x += xdir * self.speed * deltatime
+    def moveX(self, xdir):
+         self.x += xdir * self.speed * globals.dt
          self.hb.x = self.x
 
-         self.hb.clamp_ip(arena.rect)
+         self.hb.clamp_ip(globals.arena.rect)
 
          self.x = self.hb.x
 
 
-    def moveY(self, ydir, deltatime, arena):
-        self.y += ydir * self.speed * deltatime
+    def moveY(self, ydir):
+        self.y += ydir * self.speed * globals.dt
         self.hb.y = self.y
 
-        self.hb.clamp_ip(arena.rect)
+        self.hb.clamp_ip(globals.arena.rect)
 
         self.y = self.hb.y
 
@@ -86,5 +99,17 @@ class Player:
                         if self.dir.y < 0:
                             self.y = obj.hb.bottom
                             self.hb.y = self.y
+
+    def take_dmg(self, damage):
+        if not self.isInvulnerable:
+            self.hp -= damage
+            self.isInvulnerable = True
+        else:
+            pass
+            
+
+
+    
+        
 
         

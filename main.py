@@ -1,36 +1,50 @@
 import pygame
+pygame.init()
+
 import random
+from src import globals
 from src.player import *
 from src.block import *
 from src.arena import *
+from src.pellet import Pellet
+from src.bulletManager import BulletManager
 
-pygame.init()
 
-screen = pygame.display.set_mode((1024, 768))
 clock = pygame.time.Clock()
-running = True
-arena = Arena(150, 75)
-player = Player(450, 350)
+arena = globals.arena
+player = Player(800, 375)
 
 blocks = []
 
+bManager = BulletManager()
 pellets = []
 
+for i in range(3):
+    blocks.append(Block(random.randint(600, 700) + 10, random.randint(100, 300) + 10))
 
-while running:
-    delta_time = clock.tick(60) / 1000
+
+
+
+
+while globals.running:
+
+    globals.dt = clock.tick(60) / 1000
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            running = False
+            globals.running = False
 
     keys = pygame.key.get_pressed()
 
-    screen.fill("black")
-    arena.draw(screen)
+    globals.screen.fill("black")
+    arena.draw()
+    player.draw()
+    bManager.draw()
 
-    player.draw(screen)
-    
-    player.update(keys, delta_time, blocks,arena)
+    for block in blocks:
+        block.draw()
+
+    bManager.update(player)
+    player.update(keys, blocks)
 
     
     

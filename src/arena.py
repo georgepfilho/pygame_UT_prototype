@@ -1,4 +1,5 @@
 import pygame
+from src.globals import screen
 class Arena:
 
     def __init__(self, x, y):
@@ -8,5 +9,5 @@ class Arena:
         self.loadsprite = pygame.image.load('img/battle_box.png').convert_alpha()
         self.sprite = pygame.transform.scale_by(self.loadsprite, 5)
 
-    def draw (self, screen):
+    def draw (self):
         screen.blit(self.sprite, pygame.Vector2(self.x, self.y))
